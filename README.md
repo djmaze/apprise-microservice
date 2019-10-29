@@ -13,7 +13,7 @@ This service is suitable as a [sidecar service](https://docs.microsoft.com/en-us
 These are quickstart instructions using Docker Compose.
 
 1. Copy `app.env.example` to `app.env`
-2. Set `NOTIFICATION_URLS` in `app.env` according to [the documentation](https://github.com/caronc/apprise/wiki). You can add multiple targets, separated by whitespace.
+2. Set `NOTIFICATION_URLS` in `app.env` according to [the documentation](https://github.com/caronc/apprise/wiki). You can add multiple targets, separated by commas.
 3. Start the container:
     ```bash
     docker-compose up

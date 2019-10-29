@@ -2,11 +2,10 @@ import apprise
 import os
 from flask import Flask, request
 
-urls = os.environ['NOTIFICATION_URLS'].split()
+urls = os.environ['NOTIFICATION_URLS']
 
 apobj = apprise.Apprise()
-for url in urls:
-    apobj.add(url)
+apobj.add(urls)
 
 app = Flask(__name__)
 
