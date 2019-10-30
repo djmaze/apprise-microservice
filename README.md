@@ -1,5 +1,8 @@
 # Apprise-Microservice
 
+[![Build Status](https://ci.strahlungsfrei.de/api/badges/djmaze/apprise-microservice/status.svg)](https://ci.strahlungsfrei.de/djmaze/apprise-microservice)
+[![Docker Stars](https://img.shields.io/docker/stars/mazzolino/apprise-microservice.svg)](https://hub.docker.com/r/mazzolino/apprise-microservice/) [![Docker Pulls](https://img.shields.io/docker/pulls/mazzolino/apprise-microservice.svg)](https://hub.docker.com/r/mazzolino/apprise-microservice/)
+
 A small JSON API server for delivering notifications using [Apprise](https://github.com/caronc/apprise).
 
 * Notification services can be configured using an environment variable.
