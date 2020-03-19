@@ -25,3 +25,11 @@ These are quickstart instructions using Docker Compose.
     ```bash
     curl -X POST --data '{"title": "my notification title", "body": "what a great notification service!"}' localhost:5000
     ```
+
+### Using secrets
+
+If running on a docker swarm cluster [docker secrets](https://docs.docker.com/engine/swarm/secrets/) can be used to set the notification URLS to avoid leaking credentials through environment variables:
+
+1. Set up the secret with the **same** content as you would with the regular environment variable
+2. Attach the secret to the service
+3. Set the `NOTIFICATION_URLS_FILE` to the path where the secret is mounted in the service
