@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  app:
+    image: alpine
+    command: |
+      sh -c "\
+        apk add --no-cache curl \
+        && curl -X POST --data '{\"title\": \"my notification title\", \"body\": \"what a great notification service!\"}' notify:5000
+      "
+    networks:
+      - notification
+    depends_on:
+      - notify
+
+  notify:
+    image: mazzolino/apprise-microservice:0.1
+    environment:
+      NOTIFICATION_URLS: mailtos://user:pass@domain/?to=target@example.com
+    networks:
+      - notification
+
+networks:
+  notification:
