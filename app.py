@@ -2,7 +2,11 @@ import apprise
 import os
 from flask import Flask, request
 
-urls = os.environ['NOTIFICATION_URLS']
+if 'NOTIFICATION_URLS' in os.environ.keys():
+    urls = os.environ['NOTIFICATION_URLS']
+elif 'NOTIFICATION_URLS_FILE' in os.environ.keys():
+    with open(os.environ['NOTIFICATION_URLS_FILE'], 'r') as secrets_file:
+        urls = secrets_file.read()
 
 apobj = apprise.Apprise()
 apobj.add(urls)
