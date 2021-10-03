@@ -1,0 +1,16 @@
+docker:
+- Dockerfile
+- .dockerignore 
+- docker-*
+
+application:
+- app.py
+- *.py
+- requirements.txt
+
+docs:
+- app.env.example
+- README.md
+
+repo:
+- .github/*
