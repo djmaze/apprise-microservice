@@ -1,97 +1,54 @@
-kind: pipeline
-name: amd64
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: build
-    image: plugins/docker
-    settings:
-      auto_tag: true
-      auto_tag_suffix: amd64
-      repo: mazzolino/apprise-microservice
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-    when:
-      event:
-        exclude:
-          - pull_request
-
 ---
 kind: pipeline
-name: arm
-
-platform:
-  os: linux
-  arch: arm64
+name: release
 
 steps:
-  - name: build
-    image: plugins/docker
+  - name: build & push release image
+    image: thegeeklab/drone-docker-buildx:24.1.3@sha256:ec22bdd258013478e6c5cb20430a7ea815d9f3e12ac71ee90a66c1b1d74071e5
     settings:
       auto_tag: true
-      auto_tag_suffix: arm
       repo: mazzolino/apprise-microservice
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-    when:
-      event:
-        exclude:
-          - pull_request
-
----
-kind: pipeline
-name: arm64
-
-platform:
-  os: linux
-  arch: arm64
-
-steps:
-  - name: build
-    image: plugins/docker
-    settings:
-      auto_tag: true
-      auto_tag_suffix: arm64
-      repo: mazzolino/apprise-microservice
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-    when:
-      event:
-        exclude:
-          - pull_request
----
-kind: pipeline
-name: manifest
-
-steps:
-  - name: manifest
-    image: plugins/manifest:1
-    settings:
-      spec: manifest.tmpl
-      auto_tag: true
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
       platforms:
         - linux/amd64
-        - linux/arm
         - linux/arm64
-    when:
-      event:
-        exclude:
-          - pull_request
+        - linux/armhf
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
 
-depends_on:
-  - amd64
-  - arm
-  - arm64
+trigger:
+  event:
+    exclude:
+      - pull_request
+  branch:
+    - master
+
+---
+kind: pipeline
+name: pr
+
+steps:
+  - name: build & push PR image
+    image: thegeeklab/drone-docker-buildx:24.1.3@sha256:ec22bdd258013478e6c5cb20430a7ea815d9f3e12ac71ee90a66c1b1d74071e5
+    settings:
+      repo: mazzolino/apprise-microservice
+      tags:
+        - pr-${DRONE_PULL_REQUEST}
+      platforms:
+        - linux/amd64
+        - linux/arm64
+        - linux/armhf
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+trigger:
+  event:
+    - pull_request
+---
+kind: signature
+hmac: 0fabcdf9d3bf18b59d143a2356e213dedaaf2992b13d70e39db9db825adf4fb6
+
+...
