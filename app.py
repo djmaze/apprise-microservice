@@ -28,5 +28,6 @@ def hello_world():
         apobj.notify(
             title=data['title'],
             body=data['body'],
+            notify_type=data['notify_type'],
         )
     return 'ok' if send else 'deduplicated'
